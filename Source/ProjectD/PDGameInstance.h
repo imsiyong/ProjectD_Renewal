@@ -32,6 +32,9 @@ public:
 	FStat* PlayerStat;
 	FStat* GetPlayerStat();
 
+	/*class UPDCharacterStat* PlayerStat;
+	UPDCharacterStat* GetPlayerStat();*/
+
 	class UPDCharacterItemInventory* Inventory;
 	UPDCharacterItemInventory* GetPlayerInventory();
 

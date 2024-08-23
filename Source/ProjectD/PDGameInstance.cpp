@@ -7,6 +7,7 @@
 #include "PDSpawnPoint.h"
 #include "PDCharacterItemInventory.h"
 #include "PDCharacterEquip.h"
+#include "DataStruct/PDCharacterStat.h"
 
 UPDGameInstance::UPDGameInstance()
 {

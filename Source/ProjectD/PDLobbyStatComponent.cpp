@@ -7,7 +7,6 @@
 #include "Components/Button.h"
 #include "PDGameInstance.h"
 
-
 void UPDLobbyStatComponent::NativeOnInitialized()
 {
 	Super::NativeOnInitialized();

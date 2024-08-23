@@ -53,7 +53,7 @@ public:
 public:
 	bool MouseInputValid;
 
-	class APDBattlePlayerController* PDPlayerController;
+	class APlayerController* PDPlayerController;
 	class UPDGameInstance* PDGameInstance;
 
 	class FStat* Stat;

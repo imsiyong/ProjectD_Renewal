@@ -12,6 +12,7 @@
 #include "../PDGameInstance.h"
 #include "../BattleLevel/PDBattlePlayerController.h"
 #include "../UserWidget/PDUWBattleStatus.h"
+#include "../RestLevel/PDRestPlayerController.h"
 
 // Sets default values
 APDCharacterBase::APDCharacterBase()
@@ -61,9 +62,9 @@ void APDCharacterBase::BeginPlay()
 		Inventory = PDGameInstance->GetPlayerInventory();
 		Equip = PDGameInstance->GetPlayerEquip();
 	}
-	APlayerController* PlayerController = UGameplayStatics::GetPlayerController(this, 0);
-	if(PlayerController)
-		PDPlayerController = Cast<APDBattlePlayerController>(PlayerController);
+	PDPlayerController = UGameplayStatics::GetPlayerController(this, 0);
+	ChangeCurHp(Stat->MaxHp);
+	UE_LOG(LogTemp, Log, TEXT("Test Character BeginPlay STart"));
 }
 
 // Called every frame
@@ -156,20 +157,26 @@ float APDCharacterBase::TakeDamage(float DamageAmount, FDamageEvent const& Damag
 
 void APDCharacterBase::ChangeCurHp(float curHp)
 {
-	if (curHp < 0)
+	if (PDPlayerController)
 	{
-		Stat->CurHp = 0;
-		PDPlayerController->BattleStatusWidget->SetHpBar(0.0f);
-	}
-	else if (curHp > Stat->MaxHp)
-	{
-		Stat->CurHp = Stat->MaxHp;
-		PDPlayerController->BattleStatusWidget->SetHpBar(1.f);
-	}
-	else
-	{
-		Stat->CurHp = curHp;
-		PDPlayerController->BattleStatusWidget->SetHpBar(Stat->CurHp / Stat->MaxHp);
+		auto TempPlayerController = Cast<APDBattlePlayerController>(PDPlayerController);
+		if (TempPlayerController==nullptr)
+			return;
+		if (curHp < 0)
+		{
+			Stat->CurHp = 0;
+			TempPlayerController->BattleStatusWidget->SetHpBar(0.0f);
+		}
+		else if (curHp > Stat->MaxHp)
+		{
+			Stat->CurHp = Stat->MaxHp;
+			TempPlayerController->BattleStatusWidget->SetHpBar(1.f);
+		}
+		else
+		{
+			Stat->CurHp = curHp;
+			TempPlayerController->BattleStatusWidget->SetHpBar(Stat->CurHp / Stat->MaxHp);
+		}
 	}
 }
 

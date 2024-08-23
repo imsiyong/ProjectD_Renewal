@@ -47,6 +47,23 @@ void APDPotalBase::Tick(float DeltaTime)
 
 }
 
+void APDPotalBase::SwapLevelName()
+{
+	FString CurLevelName = UGameplayStatics::GetCurrentLevelName(GetWorld());
+	if (CurLevelName == TEXT("BattleLevel"))
+	{
+		LevelName = TEXT("RestLevel");
+	}
+	else if (CurLevelName == TEXT("RestLevel"))
+	{
+		LevelName = TEXT("BattleLevel");
+	}
+	else
+	{
+		UE_LOG(LogTemp, Log, TEXT("PDPotalBase/SwapLevelName : Error : Cannot Find Level Name"));
+	}
+}
+
 void APDPotalBase::NotifyActorBeginOverlap(AActor* OtherActor)
 {
 	Super::NotifyActorBeginOverlap(OtherActor);
@@ -58,7 +75,7 @@ void APDPotalBase::NotifyActorBeginOverlap(AActor* OtherActor)
 	GetWorld()->GetTimerManager().SetTimer(myTimerHandle, FTimerDelegate::CreateLambda([&]()
 		{
 			// 내가 원하는 코드 구현
-
+			SwapLevelName();
 			UGameplayStatics::OpenLevel(GetWorld(), FName(LevelName));
 			// 타이머 초기화
 			GetWorld()->GetTimerManager().ClearTimer(myTimerHandle);
