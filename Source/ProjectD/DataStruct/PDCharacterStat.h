@@ -132,4 +132,6 @@ public:
 	float GetAtkSpeed() { return Stat.AtkSpeed + Stat.AtkSpeedPoint * Stat.AtkSpeedWeight; }
 	float GetSight() { return Stat.Sight + Stat.SightPoint * Stat.SightWeight; }
 
+	void AddSpeedPoint();
+	void AddJumpPoint();
 };

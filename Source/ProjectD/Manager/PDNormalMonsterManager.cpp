@@ -31,7 +31,7 @@ void UPDNormalMonsterManager::Reset()
 UPDNormalMonsterManager* UPDNormalMonsterManager::Get()
 {
 	if (InstanceNM == nullptr)
-		InstanceNM = NewObject<UPDNormalMonsterManager>();
+		InstanceNM = NewObject<UPDNormalMonsterManager>(GetTransientPackage(),UPDNormalMonsterManager::StaticClass());
 	return InstanceNM;
 }
 
@@ -51,9 +51,10 @@ APDMonster1* UPDNormalMonsterManager::FactoryMonsterSpawn(UWorld* World, FVector
 		if (!MonsterMap.Contains(Key))
 		{
 			TempMonster->MonsterCode = Key;
-			TempMonster->Stat = new FStat(Key);
+			TempMonster->CharacterStat = NewObject<UPDCharacterStat>(this, UPDCharacterStat::StaticClass());
+			TempMonster->CharacterStat->Stat.Index = Key;
 			MonsterMap.Emplace(Key, TempMonster);
-			StatMap.Emplace(Key, TempMonster->Stat);
+			StatMap.Emplace(Key, TempMonster->CharacterStat);
 			Key++;
 			MonsterCount++;
 			return TempMonster;
@@ -70,7 +71,7 @@ APDMonster1* UPDNormalMonsterManager::GetMonster(int32 key)
 	return MonsterMap[key];
 }
 
-FStat* UPDNormalMonsterManager::GetStat(int32 key)
+UPDCharacterStat* UPDNormalMonsterManager::GetStat(int32 key)
 {
 	if (!StatMap.Contains(key))
 		return nullptr;

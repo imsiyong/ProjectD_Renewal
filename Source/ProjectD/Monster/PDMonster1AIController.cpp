@@ -5,6 +5,7 @@
 #include <Kismet/GameplayStatics.h>
 #include "PDMonster1.h"
 #include "PDMonster1Instance.h"
+#include "../DataStruct/PDCharacterStat.h"
 
 #define ERROR 50.f
 #define BOUNDARY 1000.f
@@ -119,7 +120,7 @@ void APDMonster1AIController::Patrol()
 {
 	//UE_LOG(LogTemp, Log, TEXT("Patrol~: Num : %d"), Destination.Num());
 	float Distance = FVector::Dist(MonsterPawn->GetActorLocation(), PlayerPawn->GetActorLocation());
-	if (Distance < MonsterPawn->Stat->SightRange)
+	if (Distance < MonsterPawn->CharacterStat->GetSight())
 	{
 		MonsterActionState = ENormalMonsterActionState::Tracking;
 		return;
@@ -138,12 +139,12 @@ void APDMonster1AIController::Tracking()
 	//UE_LOG(LogTemp, Log, TEXT("Tracking~"));
 	MoveToActor(PlayerPawn);
 	float Distance = FVector::Dist(MonsterPawn->GetActorLocation(), PlayerPawn->GetActorLocation());
-	if (Distance > MonsterPawn->Stat->SightRange || IsOutOfBound())
+	if (Distance > MonsterPawn->CharacterStat->GetSight() || IsOutOfBound())
 	{
 		MonsterActionState = ENormalMonsterActionState::Spawn;
 		return;
 	}
-	if (Distance < MonsterPawn->Stat->AtkRange)
+	if (Distance < MonsterPawn->CharacterStat->GetAtkRange())
 	{
 		MonsterActionState = ENormalMonsterActionState::Attack;
 		MonsterPawn->BasicAttackStart();

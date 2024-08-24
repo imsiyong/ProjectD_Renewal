@@ -5,15 +5,17 @@
 
 FEquipStat::FEquipStat()
 {
-
-}
-
-FEquipStat::FEquipStat(int32 index)
-{
-
+	Index = 0;
+	MaxHp = 0.0f;
+	Atk = 0.0f;
+	Def = 0.0f;
+	Speed = 0.0f;
+	Jump = 0.0f;
+	AtkRange = 0.0f;
+	AtkSpeed = 0.0f;
 }
 
 UPDEquipStat::UPDEquipStat()
 {
-
+	Stat = FEquipStat();
 }

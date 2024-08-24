@@ -32,7 +32,8 @@ public:
 	EMonsterBasicState MonsterBasicState;
 	EMonsterGrade MonsterGrade;
 
-	class FStat* Stat;
+	//class FStat* Stat;
+	class UPDCharacterStat* CharacterStat;
 	int32 MonsterCode;
 	bool IsAttack;
 

@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
 #include "../Monster/PDMonster1.h"
+#include "../DataStruct/PDCharacterStat.h"
 #include "../PDDataSet.h"
 #include "PDNormalMonsterManager.generated.h"
 
@@ -20,7 +21,7 @@ private:
 
 	TMap<int32, APDMonster1*> MonsterMap;
 
-	TMap<int32, FStat*> StatMap;
+	TMap<int32, UPDCharacterStat*> StatMap;
 
 	int32 Key;
 
@@ -35,7 +36,7 @@ public:
 	APDMonster1* FactoryMonsterSpawn(UWorld* World, FVector SpawnLocation, FRotator Rotator, TArray<FVector> patrol, FActorSpawnParameters SpawnParams);
 
 	APDMonster1* GetMonster(int32 key);
-	FStat* GetStat(int32 key);
+	UPDCharacterStat* GetStat(int32 key);
 
 	void RemoveMonster(int32 key);
 };

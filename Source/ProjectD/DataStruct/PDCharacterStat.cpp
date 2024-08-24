@@ -2,6 +2,9 @@
 
 
 #include "PDCharacterStat.h"
+#include <Kismet/GameplayStatics.h>
+#include "../Character/PDCharacterBase.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 FCharacterStat::FCharacterStat()
 {
@@ -65,5 +68,33 @@ FCharacterStat::FCharacterStat(int32 index)
 
 UPDCharacterStat::UPDCharacterStat()
 {
+	Stat = FCharacterStat();
+}
 
+void UPDCharacterStat::AddSpeedPoint()
+{
+	ACharacter* TempCharacter = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
+	if (TempCharacter)
+	{
+		APDCharacterBase* Player = Cast<APDCharacterBase>(TempCharacter);
+		if (Player)
+		{
+			Stat.SpeedPoint++;
+			Player->GetCharacterMovement()->MaxWalkSpeed = GetSpeed();
+		}
+	}
+}
+
+void UPDCharacterStat::AddJumpPoint()
+{
+	ACharacter* TempCharacter = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
+	if (TempCharacter)
+	{
+		APDCharacterBase* Player = Cast<APDCharacterBase>(TempCharacter);
+		if (Player)
+		{
+			Stat.JumpPoint++;
+			Player->GetCharacterMovement()->JumpZVelocity = GetJump();
+		}
+	}
 }

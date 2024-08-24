@@ -130,7 +130,7 @@ void APDMonster1::AttackCheck()
 	FHitResult HitResult;
 	FCollisionQueryParams Params(NAME_None, false, this);
 
-	float AttackRange = Stat->AtkRange;
+	float AttackRange = CharacterStat->GetAtkRange();
 	float AttackRadius = 50.f;
 
 	bool bResult = GetWorld()->SweepSingleByChannel(
@@ -144,7 +144,7 @@ void APDMonster1::AttackCheck()
 	if (bResult && HitResult.Actor.IsValid() && HitResult.Actor->ActorHasTag("Player"))
 	{
 		FDamageEvent DamageEvent;
-		HitResult.Actor->TakeDamage(Stat->Atk, DamageEvent, GetController(), this);
+		HitResult.Actor->TakeDamage(CharacterStat->GetAtk(), DamageEvent, GetController(), this);
 	}
 }
 

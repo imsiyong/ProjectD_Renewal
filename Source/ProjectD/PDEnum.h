@@ -61,8 +61,11 @@ enum class ECharacterStatType:uint8
 	None		UMETA(DisplayName = "None"),
 	Atk			UMETA(DisplayName = "Atk"),
 	AtkSpeed	UMETA(DisplayName = "AtkSpeed"),
+	AtkRange	UMETA(DisplayName = "AtkRange"),
 	Def			UMETA(DisplayName = "Def"),
-	Hp			UMETA(DisplayName = "Hp")
+	Hp			UMETA(DisplayName = "Hp"),
+	Speed		UMETA(DisplayName = "Speed"),
+	Jump		UMETA(DisplayName = "Jump")
 };
 
 UENUM(BlueprintType)
@@ -94,7 +97,7 @@ enum class EEquipType : uint8
 UENUM(BlueprintType)
 enum class EMonsterGrade : uint8
 {
-	None,
-	Normal,
-	Boss
+	None		UMETA(DisplayName = "None"),
+	Normal		UMETA(DisplayName = "Normal"),
+	Boss		UMETA(DisplayName = "Boss")
 };

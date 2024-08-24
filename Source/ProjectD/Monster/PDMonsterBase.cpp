@@ -4,6 +4,7 @@
 #include "PDMonsterBase.h"
 #include "../PDDataSet.h"
 #include "Components/CapsuleComponent.h"
+#include "../DataStruct/PDCharacterStat.h"
 
 // Sets default values
 APDMonsterBase::APDMonsterBase()
@@ -49,14 +50,14 @@ void APDMonsterBase::PostInitializeComponents()
 
 float APDMonsterBase::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
-	Stat->CurHp -= DamageAmount;
-	if (Stat->CurHp <= 0.0f)
+	CharacterStat->Stat.CurHp -= DamageAmount;
+	if (CharacterStat->Stat.CurHp <= 0.0f)
 	{
-		UE_LOG(LogTemp, Log, TEXT("Monster is dead CurHp: %f"), Stat->CurHp);
+		UE_LOG(LogTemp, Log, TEXT("Monster is dead CurHp: %f"), CharacterStat->Stat.CurHp);
 		DeathStart();
 		return 0.0f;
 	}
-	UE_LOG(LogTemp, Log, TEXT("Monster Sample code[%d] CurHp : %f"), Stat->ActorCode, Stat->CurHp);
+	UE_LOG(LogTemp, Log, TEXT("Monster Sample code[%d] CurHp : %f"), CharacterStat->Stat.Index, CharacterStat->Stat.CurHp);
 	return 0.0f;
 }
 

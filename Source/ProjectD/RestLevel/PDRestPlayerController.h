@@ -15,4 +15,10 @@ class PROJECTD_API APDRestPlayerController : public APlayerController
 	GENERATED_BODY()
 public:
 	APDRestPlayerController();
+
+	virtual void SetupInputComponent() override;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Widget")
+		TSubclassOf<class UPDUWCharacterStat> UWCharacterStat;
+	class UPDUWCharacterStat* CharacterStat;
 };

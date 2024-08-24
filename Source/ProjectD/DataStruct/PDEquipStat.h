@@ -13,10 +13,35 @@ struct FEquipStat
 	GENERATED_USTRUCT_BODY()
 public:
 	FEquipStat();
-	FEquipStat(int32 index);
+	FEquipStat& operator=(const FEquipStat& ref)
+	{
+		Index = ref.Index;
+		MaxHp = ref.MaxHp;
+		Atk = ref.Atk;
+		Def = ref.Def;
+		Speed = ref.Speed;
+		Jump = ref.Jump;
+		AtkRange = ref.AtkRange;
+		AtkSpeed = ref.AtkSpeed;
+		return *this;
+	}
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		int32 Index;
-
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float MaxHp;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float Atk;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float Def;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float Speed;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float Jump;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float AtkRange;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float AtkSpeed;
 };
 
 /**

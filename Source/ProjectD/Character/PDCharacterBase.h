@@ -56,9 +56,8 @@ public:
 	class APlayerController* PDPlayerController;
 	class UPDGameInstance* PDGameInstance;
 
-	class FStat* Stat;
+	class UPDCharacterStat* CharacterStat;
 	class UPDCharacterItemInventory* Inventory;
 	class UPDCharacterEquip* Equip;
-
 
 };

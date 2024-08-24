@@ -13,6 +13,7 @@
 #include "../BattleLevel/PDBattlePlayerController.h"
 #include "../UserWidget/PDUWBattleStatus.h"
 #include "../RestLevel/PDRestPlayerController.h"
+#include "../Manager/PDNormalMonsterManager.h"
 
 // Sets default values
 APDCharacterBase::APDCharacterBase()
@@ -58,13 +59,18 @@ void APDCharacterBase::BeginPlay()
 	Super::BeginPlay();
 	if (PDGameInstance)
 	{
-		Stat = PDGameInstance->GetPlayerStat();
+		CharacterStat = PDGameInstance->GetPlayerStat();
+		if (CharacterStat)
+		{
+			GetCharacterMovement()->MaxWalkSpeed = CharacterStat->GetSpeed();
+			GetCharacterMovement()->JumpZVelocity = CharacterStat->GetJump();
+		}
 		Inventory = PDGameInstance->GetPlayerInventory();
 		Equip = PDGameInstance->GetPlayerEquip();
 	}
 	PDPlayerController = UGameplayStatics::GetPlayerController(this, 0);
-	ChangeCurHp(Stat->MaxHp);
-	UE_LOG(LogTemp, Log, TEXT("Test Character BeginPlay STart"));
+	ChangeCurHp(CharacterStat->GetMaxHp());
+	UE_LOG(LogTemp, Log, TEXT("Test Character BeginPlay STart Cur Hp : %f"), CharacterStat->Stat.CurHp);
 }
 
 // Called every frame
@@ -150,8 +156,8 @@ void APDCharacterBase::MyLookUpAtRate(float Rate)
 
 float APDCharacterBase::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
-	ChangeCurHp(Stat->CurHp - DamageAmount);
-	UE_LOG(LogTemp, Log, TEXT("Player code[%d] CurHp : %f"), Stat->ActorCode, Stat->CurHp);
+	ChangeCurHp(CharacterStat->Stat.CurHp - DamageAmount);
+	UE_LOG(LogTemp, Log, TEXT("Player code[%d] CurHp : %f"), CharacterStat->Stat.Index, CharacterStat->Stat.CurHp);
 	return 0.0f;
 }
 
@@ -162,20 +168,20 @@ void APDCharacterBase::ChangeCurHp(float curHp)
 		auto TempPlayerController = Cast<APDBattlePlayerController>(PDPlayerController);
 		if (TempPlayerController==nullptr)
 			return;
-		if (curHp < 0)
+		if (curHp <= 0)
 		{
-			Stat->CurHp = 0;
+			CharacterStat->Stat.CurHp = 0;
 			TempPlayerController->BattleStatusWidget->SetHpBar(0.0f);
 		}
-		else if (curHp > Stat->MaxHp)
+		else if (curHp >= CharacterStat->GetMaxHp())
 		{
-			Stat->CurHp = Stat->MaxHp;
+			CharacterStat->Stat.CurHp = CharacterStat->GetMaxHp();
 			TempPlayerController->BattleStatusWidget->SetHpBar(1.f);
 		}
 		else
 		{
-			Stat->CurHp = curHp;
-			TempPlayerController->BattleStatusWidget->SetHpBar(Stat->CurHp / Stat->MaxHp);
+			CharacterStat->Stat.CurHp = curHp;
+			TempPlayerController->BattleStatusWidget->SetHpBar(CharacterStat->Stat.CurHp / CharacterStat->GetMaxHp());
 		}
 	}
 }
@@ -185,7 +191,7 @@ void APDCharacterBase::AttackCheck()
 	FHitResult HitResult;
 	FCollisionQueryParams Params(NAME_None, false, this);
 
-	float AttackRange = Stat->AtkRange;
+	float AttackRange = CharacterStat->GetAtkRange();
 	float AttackRadius = 50.f;
 
 	bool bResult = GetWorld()->SweepSingleByChannel(
@@ -199,7 +205,7 @@ void APDCharacterBase::AttackCheck()
 	if (bResult && HitResult.Actor.IsValid() && HitResult.Actor->ActorHasTag("Monster"))
 	{
 		FDamageEvent DamageEvent;
-		HitResult.Actor->TakeDamage(Stat->Atk, DamageEvent, GetController(), this);
+		HitResult.Actor->TakeDamage(CharacterStat->GetAtk(), DamageEvent, GetController(), this);
 	}
 }
 

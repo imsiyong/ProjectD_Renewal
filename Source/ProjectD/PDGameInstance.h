@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Engine/GameInstance.h"
 #include "PDDataSet.h"
+#include "DataStruct/PDCharacterStat.h"
 #include "PDGameInstance.generated.h"
 
 
@@ -29,15 +30,18 @@ public:
 
 	class UDataTable* ItemData; 
 public:
-	FStat* PlayerStat;
-	FStat* GetPlayerStat();
+	/*FStat* PlayerStat;
+	FStat* GetPlayerStat();*/
 
-	/*class UPDCharacterStat* PlayerStat;
-	UPDCharacterStat* GetPlayerStat();*/
+	UPROPERTY()
+	class UPDCharacterStat* PlayerStat;
+	UPDCharacterStat* GetPlayerStat();
 
+	UPROPERTY()
 	class UPDCharacterItemInventory* Inventory;
 	UPDCharacterItemInventory* GetPlayerInventory();
 
+	UPROPERTY()
 	class UPDCharacterEquip* Equip;
 	UPDCharacterEquip* GetPlayerEquip();
 };

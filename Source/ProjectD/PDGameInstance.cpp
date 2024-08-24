@@ -32,23 +32,26 @@ void UPDGameInstance::MonsterStatArrayAdd()
 	MonsterStatArray.Add(ref);
 }
 
-FStat* UPDGameInstance::GetPlayerStat()
+UPDCharacterStat* UPDGameInstance::GetPlayerStat()
 {
 	if (PlayerStat == nullptr)
-		PlayerStat = new FStat(0);
+	{
+		PlayerStat = NewObject<UPDCharacterStat>(this, UPDCharacterStat::StaticClass());
+		PlayerStat->Stat.Index = 0;
+	}
 	return PlayerStat;
 }
 
 UPDCharacterItemInventory* UPDGameInstance::GetPlayerInventory()
 {
 	if (Inventory == nullptr)
-		Inventory = NewObject<UPDCharacterItemInventory>();
+		Inventory = NewObject<UPDCharacterItemInventory>(this, UPDCharacterItemInventory::StaticClass());
 	return Inventory;
 }
 
 UPDCharacterEquip* UPDGameInstance::GetPlayerEquip()
 {
 	if (Equip == nullptr)
-		Equip = NewObject<UPDCharacterEquip>();
+		Equip = NewObject<UPDCharacterEquip>(this, UPDCharacterEquip::StaticClass());
 	return Equip;
 }

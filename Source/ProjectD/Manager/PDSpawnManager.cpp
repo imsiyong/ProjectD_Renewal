@@ -113,7 +113,7 @@ bool APDSpawnManager::LoadSpawnData()
 APDSpawnManager* APDSpawnManager::Get()
 {
 	if (InstanceMM == nullptr)
-		InstanceMM = NewObject<APDSpawnManager>();
+		InstanceMM = NewObject<APDSpawnManager>(GetTransientPackage(), APDSpawnManager::StaticClass());
 	return InstanceMM;
 }
 
