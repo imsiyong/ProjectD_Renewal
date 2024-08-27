@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
+#include "../PDEnum.h"
 #include "PDRestPlayerController.generated.h"
 
 /**
@@ -21,4 +22,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Widget")
 		TSubclassOf<class UPDUWCharacterStat> UWCharacterStat;
 	class UPDUWCharacterStat* CharacterStat;
+
+	void ToggleInteractionWidget();
+	EInteractionType InteractionType;
+
+	void RemoveAllInteractionWidget();
 };

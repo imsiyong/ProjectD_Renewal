@@ -29,6 +29,8 @@ public:
 
 	void MoveForward(float Value);
 	void MoveRight(float Value);
+	void Jump() override;
+	void StopJumping() override;
 	void TurnAtRate(float Rate);
 	void MyTurnAtRate(float Rate);
 	void LookUpAtRate(float Rate);
@@ -52,6 +54,7 @@ public:
 
 public:
 	bool MouseInputValid;
+	bool MovementInputValid;
 
 	class APlayerController* PDPlayerController;
 	class UPDGameInstance* PDGameInstance;
@@ -60,4 +63,12 @@ public:
 	class UPDCharacterItemInventory* Inventory;
 	class UPDCharacterEquip* Equip;
 
+	void ToggleInteractionWidget();
+
+	UFUNCTION()
+		void BeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
+			int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+	UFUNCTION()
+		void EndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
+			int32 OtherBodyIndex);
 };

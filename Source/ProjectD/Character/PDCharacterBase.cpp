@@ -31,6 +31,7 @@ APDCharacterBase::APDCharacterBase()
 	bUseControllerRotationYaw = false;
 	bUseControllerRotationRoll = false;
 	MouseInputValid = true;
+	MovementInputValid = true;
 
 	// Configure character movement
 	GetCharacterMovement()->bOrientRotationToMovement = true; // Character moves in the direction of input...	
@@ -51,12 +52,16 @@ APDCharacterBase::APDCharacterBase()
 	//
 	//
 	Tags.Add(FName("Player"));
+	
 }
 
 // Called when the game starts or when spawned
 void APDCharacterBase::BeginPlay()
 {
 	Super::BeginPlay();
+	GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &APDCharacterBase::BeginOverlap);
+	GetCapsuleComponent()->OnComponentEndOverlap.AddDynamic(this, &APDCharacterBase::EndOverlap);
+
 	if (PDGameInstance)
 	{
 		CharacterStat = PDGameInstance->GetPlayerStat();
@@ -91,8 +96,9 @@ void APDCharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	PlayerInputComponent->BindAxis("TurnRate", this, &APDCharacterBase::TurnAtRate);
 	PlayerInputComponent->BindAxis("LookUp", this, &APDCharacterBase::MyLookUpAtRate);
 	PlayerInputComponent->BindAxis("LookUpRate", this, &APDCharacterBase::LookUpAtRate);
-	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
-	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
+	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &APDCharacterBase::Jump);
+	PlayerInputComponent->BindAction("Jump", IE_Released, this, &APDCharacterBase::StopJumping);
+	PlayerInputComponent->BindAction("Interaction", IE_Pressed, this, &APDCharacterBase::ToggleInteractionWidget);
 }
 
 void APDCharacterBase::PostInitializeComponents()
@@ -103,7 +109,7 @@ void APDCharacterBase::PostInitializeComponents()
 
 void APDCharacterBase::MoveForward(float Value)
 {
-	if ((Controller != nullptr) && (Value != 0.0f))
+	if (MovementInputValid && (Controller != nullptr) && (Value != 0.0f))
 	{
 		// find out which way is forward
 		const FRotator Rotation = Controller->GetControlRotation();
@@ -117,7 +123,7 @@ void APDCharacterBase::MoveForward(float Value)
 
 void APDCharacterBase::MoveRight(float Value)
 {
-	if ((Controller != nullptr) && (Value != 0.0f))
+	if (MovementInputValid && (Controller != nullptr) && (Value != 0.0f))
 	{
 		// find out which way is right
 		const FRotator Rotation = Controller->GetControlRotation();
@@ -127,6 +133,24 @@ void APDCharacterBase::MoveRight(float Value)
 		const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
 		// add movement in that direction
 		AddMovementInput(Direction, Value);
+	}
+}
+
+void APDCharacterBase::Jump()
+{
+	if (MovementInputValid)
+	{
+		bPressedJump = true;
+		JumpKeyHoldTime = 0.0f;
+	}
+}
+
+void APDCharacterBase::StopJumping()
+{
+	if (MovementInputValid)
+	{
+		bPressedJump = false;
+		ResetJumpState();
 	}
 }
 
@@ -206,6 +230,59 @@ void APDCharacterBase::AttackCheck()
 	{
 		FDamageEvent DamageEvent;
 		HitResult.Actor->TakeDamage(CharacterStat->GetAtk(), DamageEvent, GetController(), this);
+	}
+}
+
+void APDCharacterBase::ToggleInteractionWidget()
+{
+	auto PlayerController = Cast<APDRestPlayerController>(PDPlayerController);
+	if (PlayerController == nullptr)
+		return;
+	PlayerController->ToggleInteractionWidget();
+	if (PlayerController->InteractionType != EInteractionType::None)
+	{
+		if (MovementInputValid)
+		{
+			MovementInputValid = false;
+		}
+		else
+		{
+			MovementInputValid = true;
+		}
+
+		if (MouseInputValid)
+		{
+			MouseInputValid = false;
+		}
+		else
+		{
+			MouseInputValid = true;
+		}
+	}
+}
+
+void APDCharacterBase::BeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	if (OtherActor->ActorHasTag(FName("Test")))
+	{
+		auto PlayerController = Cast<APDRestPlayerController>(PDPlayerController);
+		if (PlayerController == nullptr)
+			return;
+		PlayerController->InteractionType = EInteractionType::Stat;
+	}
+}
+
+void APDCharacterBase::EndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+	if (OtherActor->ActorHasTag(FName("Test")))
+	{
+		MovementInputValid = true;
+		MouseInputValid = true;
+		auto PlayerController = Cast<APDRestPlayerController>(PDPlayerController);
+		if (PlayerController == nullptr)
+			return;
+		PlayerController->InteractionType = EInteractionType::None;
+		PlayerController->RemoveAllInteractionWidget();
 	}
 }
 

@@ -6,8 +6,7 @@
 
 APDRestPlayerController::APDRestPlayerController()
 {
-	bShowMouseCursor = true;
-
+	InteractionType = EInteractionType::None;
 	ConstructorHelpers::FClassFinder<UPDUWCharacterStat> CS(TEXT("WidgetBlueprint'/Game/UMG/Renewal/UWCharacterStat.UWCharacterStat_C'"));
 	if (CS.Succeeded())
 	{
@@ -20,9 +19,45 @@ void APDRestPlayerController::SetupInputComponent()
 	if (UWCharacterStat != nullptr)
 	{
 		CharacterStat = CreateWidget<UPDUWCharacterStat>(this, UWCharacterStat);
-		if (CharacterStat != nullptr)
-		{
-			CharacterStat->AddToViewport();
-		}
 	}
 }
+
+void APDRestPlayerController::ToggleInteractionWidget()
+{
+	switch (InteractionType)
+	{
+	case EInteractionType::None:
+		break;
+	case EInteractionType::Stat:
+		if (CharacterStat != nullptr)
+		{
+			if (CharacterStat->IsInViewport())
+			{
+				CharacterStat->RemoveFromViewport();
+				bShowMouseCursor = false;
+			}
+			else
+			{
+				CharacterStat->AddToViewport();
+				bShowMouseCursor = true;
+			}
+		}
+		break;
+	case EInteractionType::Inventory:
+		break;
+	case EInteractionType::Equip:
+		break;
+	default:
+		break;
+	}
+}
+
+void APDRestPlayerController::RemoveAllInteractionWidget()
+{
+	bShowMouseCursor = false;
+	if (CharacterStat->IsInViewport())
+	{
+		CharacterStat->RemoveFromViewport();
+	}
+}
+

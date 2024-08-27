@@ -4,7 +4,7 @@
 #include "PDGameInstance.h"
 #include "ItemData.h"
 #include "Manager/PDSpawnManager.h"
-#include "PDSpawnPoint.h"
+#include "DataStruct/PDSpawnPoint.h"
 #include "PDCharacterItemInventory.h"
 #include "PDCharacterEquip.h"
 #include "DataStruct/PDCharacterStat.h"
@@ -17,6 +17,11 @@ UPDGameInstance::UPDGameInstance()
 	if (IT.Succeeded())
 	{
 		ItemData = IT.Object;
+	}
+	static ConstructorHelpers::FObjectFinder<UDataTable> ET(TEXT("DataTable'/Game/CsvData/EquipData.EquipData'"));
+	if (ET.Succeeded())
+	{
+		EquipData = ET.Object;
 	}
 }
 

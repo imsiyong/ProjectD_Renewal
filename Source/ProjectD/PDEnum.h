@@ -101,3 +101,12 @@ enum class EMonsterGrade : uint8
 	Normal		UMETA(DisplayName = "Normal"),
 	Boss		UMETA(DisplayName = "Boss")
 };
+
+UENUM(BlueprintType)
+enum class EInteractionType : uint8
+{
+	None		UMETA(DisplayName = "None"),
+	Stat		UMETA(DisplyaName = "Stat"),
+	Inventory	UMETA(DisplayName = "Inventory"),
+	Equip		UMETA(DisplayName = "Equip")
+};

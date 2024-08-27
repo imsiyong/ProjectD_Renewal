@@ -2,7 +2,7 @@
 
 
 #include "PDSpawnManager.h"
-#include "../PDSpawnPoint.h"
+#include "../DataStruct/PDSpawnPoint.h"
 #include "../Monster/PDMonster1.h"
 #include "PDNormalMonsterManager.h"
 

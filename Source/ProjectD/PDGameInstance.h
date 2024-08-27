@@ -27,9 +27,10 @@ public:
 
 	TArray<FStat*> GetPlayerStatArray() { return PlayerStatArray; }
 	TArray<FStat*> GetMonsterStatArray() { return MonsterStatArray; }
-
-	class UDataTable* ItemData; 
+	class UDataTable* ItemData;
+	
 public:
+	class UDataTable* EquipData;
 	/*FStat* PlayerStat;
 	FStat* GetPlayerStat();*/
 
