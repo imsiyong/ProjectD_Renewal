@@ -31,6 +31,7 @@ public:
 	
 public:
 	class UDataTable* EquipData;
+	FString GetEquipRowData(int32 index, FString rowName);
 	/*FStat* PlayerStat;
 	FStat* GetPlayerStat();*/
 

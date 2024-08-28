@@ -2,6 +2,7 @@
 
 
 #include "PDCharacterBase.h"
+#include "Engine/World.h"
 #include <Kismet/GameplayStatics.h>
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
@@ -14,6 +15,7 @@
 #include "../UserWidget/PDUWBattleStatus.h"
 #include "../RestLevel/PDRestPlayerController.h"
 #include "../Manager/PDNormalMonsterManager.h"
+#include "../Object/Item/PDItemBase.h"
 
 // Sets default values
 APDCharacterBase::APDCharacterBase()
@@ -21,6 +23,7 @@ APDCharacterBase::APDCharacterBase()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);
+	GetCapsuleComponent()->SetCollisionProfileName(TEXT("PDCharacter"));
 
 	// set our turn rates for input
 	BaseTurnRate = 45.f;
@@ -235,6 +238,18 @@ void APDCharacterBase::AttackCheck()
 
 void APDCharacterBase::ToggleInteractionWidget()
 {
+	FVector SpawnLocation = GetActorLocation();
+	FVector add = FVector(50.f, 50.f, 0.f);
+	SpawnLocation = SpawnLocation + add;
+	FRotator SpawnRotation = FRotator(0.0f, 0.0f, 0.0f);
+	
+	APDItemBase* DeferredActor = GetWorld()->SpawnActorDeferred<APDItemBase>(APDItemBase::StaticClass(), FTransform(SpawnRotation, SpawnLocation));
+	if (DeferredActor)
+	{
+		DeferredActor->Init(1);
+		DeferredActor->FinishSpawning(FTransform(SpawnRotation, SpawnLocation));
+	}
+
 	auto PlayerController = Cast<APDRestPlayerController>(PDPlayerController);
 	if (PlayerController == nullptr)
 		return;

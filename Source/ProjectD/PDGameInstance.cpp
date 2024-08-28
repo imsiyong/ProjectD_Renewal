@@ -8,6 +8,7 @@
 #include "PDCharacterItemInventory.h"
 #include "PDCharacterEquip.h"
 #include "DataStruct/PDCharacterStat.h"
+#include "DataStruct/PDItemDataTable.h"
 
 UPDGameInstance::UPDGameInstance()
 {
@@ -35,6 +36,64 @@ void UPDGameInstance::MonsterStatArrayAdd()
 {
 	class FStat* ref = new FStat(MonsterCode++);
 	MonsterStatArray.Add(ref);
+}
+
+FString UPDGameInstance::GetEquipRowData(int32 index, FString rowName)
+{
+	if (EquipData == nullptr)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Error : GameInstance - GetEquipRowData : EquipData is nullptr"));
+		return FString();
+	}
+	FEquipData* rowData = EquipData->FindRow<FEquipData>(*FString::FromInt(index), TEXT(""));
+	if (rowData)
+	{
+		if (rowName == "Name")
+		{
+			return rowData->Name;
+		}
+		else if (rowName == "Mesh")
+		{
+			return rowData->Mesh;
+		}
+		else if (rowName == "Texture")
+		{
+			return rowData->Texture;
+		}
+		else if (rowName == "Atk")
+		{
+			return FString::SanitizeFloat(rowData->Atk);
+		}
+		else if (rowName == "AtkSpeed")
+		{
+			return FString::SanitizeFloat(rowData->AtkSpeed);
+		}
+		else if (rowName == "AtkRange")
+		{
+			return FString::SanitizeFloat(rowData->AtkRange);
+		}
+		else if (rowName == "Speed")
+		{
+			return FString::SanitizeFloat(rowData->Speed);
+		}
+		else if (rowName == "Jump")
+		{
+			return FString::SanitizeFloat(rowData->Jump);
+		}
+		else if (rowName == "MaxHp")
+		{
+			return FString::SanitizeFloat(rowData->MaxHp);
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Error : GameInstance - GetEquipRowData : rowData has not valid value"));
+		}
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Error : GameInstance - GetEquipRowData : rowData is nullptr"));
+	}
+	return FString();
 }
 
 UPDCharacterStat* UPDGameInstance::GetPlayerStat()

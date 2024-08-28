@@ -29,6 +29,7 @@ public:
 			int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
 	class ACharacterBase* Player;
+	class UPDGameInstance* PDGameInstance;
 
 	void Init(int32 index);
 

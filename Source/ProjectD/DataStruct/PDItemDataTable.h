@@ -9,12 +9,12 @@
 
 
 USTRUCT(BlueprintType)
-struct FEqipData : public FTableRowBase
+struct FEquipData : public FTableRowBase
 {
 	GENERATED_BODY()
 public:
-	FEqipData() {}
-	~FEqipData() {}
+	FEquipData() {}
+	~FEquipData() {}
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
 		int32 ItemCode;
