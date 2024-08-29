@@ -48,5 +48,5 @@ public:
 	void SprintStart();
 	void SprintStop();
 
-	void WeaponDrop();
+	void WeaponDrop(int32 index, FVector SpawnLocation, FRotator SpawnRotation);
 };

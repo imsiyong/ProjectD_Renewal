@@ -238,17 +238,7 @@ void APDCharacterBase::AttackCheck()
 
 void APDCharacterBase::ToggleInteractionWidget()
 {
-	FVector SpawnLocation = GetActorLocation();
-	FVector add = FVector(50.f, 50.f, 0.f);
-	SpawnLocation = SpawnLocation + add;
-	FRotator SpawnRotation = FRotator(0.0f, 0.0f, 0.0f);
 	
-	APDItemBase* DeferredActor = GetWorld()->SpawnActorDeferred<APDItemBase>(APDItemBase::StaticClass(), FTransform(SpawnRotation, SpawnLocation));
-	if (DeferredActor)
-	{
-		DeferredActor->Init(1);
-		DeferredActor->FinishSpawning(FTransform(SpawnRotation, SpawnLocation));
-	}
 
 	auto PlayerController = Cast<APDRestPlayerController>(PDPlayerController);
 	if (PlayerController == nullptr)

@@ -8,6 +8,7 @@
 #include "Components/CapsuleComponent.h"
 #include "../PDDataSet.h"
 #include "../Manager/PDNormalMonsterManager.h"
+#include "../Object/Item/PDItemBase.h"
 
 APDMonster1::APDMonster1()
 {
@@ -75,7 +76,7 @@ void APDMonster1::DeathStart()
 	GetCapsuleComponent()->SetCollisionProfileName("NoCollision");
 	
 	//Drop a Item
-	WeaponDrop();
+	WeaponDrop(FMath::RandRange(1,2), GetActorLocation(), FRotator(0.f,0.f,0.f));
 
 	//Monster Remove on MonsterManager
 	UPDNormalMonsterManager::Get()->RemoveMonster(MonsterCode);
@@ -174,6 +175,12 @@ void APDMonster1::SprintStop()
 	GetCharacterMovement()->MaxWalkSpeed /= SprintMultiplier;
 }
 
-void APDMonster1::WeaponDrop()
+void APDMonster1::WeaponDrop(int32 index, FVector SpawnLocation, FRotator SpawnRotation)
 {
+	APDItemBase* DeferredActor = GetWorld()->SpawnActorDeferred<APDItemBase>(APDItemBase::StaticClass(), FTransform(SpawnRotation, SpawnLocation));
+	if (DeferredActor)
+	{
+		DeferredActor->Init(index);
+		DeferredActor->FinishSpawning(FTransform(SpawnRotation, SpawnLocation));
+	}
 }
