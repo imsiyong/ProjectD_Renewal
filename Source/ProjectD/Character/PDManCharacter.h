@@ -28,5 +28,18 @@ public:
 	virtual void PostInitializeComponents() override;
 
 public:
+	bool IsAttacking;
+	bool CanNextCombo;
+	bool IsComboInputOn;
+	int32 ComboCount;
+	int32 MaxCombo;
+
+	void PlayAttack();
+	void NextComboStartState();
+	void ComboStateReset();
+	UFUNCTION()
+	void OnAttackMontageEnded(UAnimMontage* Montage, bool bInterruped);
+
+public:
 	class UPDCharacter1AInstance* PDCharacter1AInstance;
 };

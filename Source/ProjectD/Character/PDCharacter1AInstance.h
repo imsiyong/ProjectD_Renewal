@@ -6,6 +6,9 @@
 #include "Animation/AnimInstance.h"
 #include "PDCharacter1AInstance.generated.h"
 
+
+DECLARE_MULTICAST_DELEGATE(FOnAttackHit);
+DECLARE_MULTICAST_DELEGATE(FOnAttackNext);
 /**
  * 
  */
@@ -27,4 +30,20 @@ public:
 		class APawn* Pawn;
 	UPROPERTY()
 		class ACharacter* Character;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Component")
+		class UAnimMontage* AttackMontage;
+
+	void PlaySAttackMontage(float atkSpeed);
+	void JumpToSAttackMontageSectionName(int32 section);
+
+	FName GetAttackMontageSectionName(int32 num);
+
+	UFUNCTION()
+		void AnimNotify_AttackHitCheck();
+	UFUNCTION()
+		void AnimNotify_AttackNextCheck();
+
+	FOnAttackHit OnAttackHit;
+	FOnAttackNext OnAttackNext;
 };
