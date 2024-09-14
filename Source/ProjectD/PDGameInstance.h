@@ -30,7 +30,7 @@ public:
 	class UDataTable* ItemData;
 	
 public:
-	class UDataTable* EquipData;
+	class UDataTable* EquipmentData;
 	FString GetEquipRowData(int32 index, FString rowName);
 	/*FStat* PlayerStat;
 	FStat* GetPlayerStat();*/
@@ -38,6 +38,18 @@ public:
 	UPROPERTY()
 	class UPDCharacterStat* PlayerStat;
 	UPDCharacterStat* GetPlayerStat();
+
+	UPROPERTY()
+		class UPDBagData* BagData;
+	UPDBagData* GetBagData();
+
+	UPROPERTY()
+		class UPDEquipData* EquipData;
+	UPDEquipData* GetEquipData();
+
+	UPROPERTY()
+		class UPDStorageData* StorageData;
+	UPDStorageData* GetStorageData();
 
 	UPROPERTY()
 	class UPDCharacterItemInventory* Inventory;

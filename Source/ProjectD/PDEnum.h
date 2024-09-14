@@ -73,7 +73,9 @@ enum class ESlotType :uint8
 {
 	None		UMETA(DisplayName ="None"),
 	Inventory	UMETA(DisplayName="Weapon"),
-	Equip		UMETA(DisplayName="Equip")
+	Equip		UMETA(DisplayName="Equip"),
+	Storage		UMETA(DisplayName="Storage"),
+	Bag			UMETA(DisplayName="Bag")
 };
 
 UENUM(BlueprintType)

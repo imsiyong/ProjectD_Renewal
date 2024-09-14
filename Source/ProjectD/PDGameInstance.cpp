@@ -9,6 +9,9 @@
 #include "PDCharacterEquip.h"
 #include "DataStruct/PDCharacterStat.h"
 #include "DataStruct/PDItemDataTable.h"
+#include "DataStruct/PDBagData.h"
+#include "DataStruct/PDEquipData.h"
+#include "DataStruct/PDStorageData.h"
 
 UPDGameInstance::UPDGameInstance()
 {
@@ -22,7 +25,7 @@ UPDGameInstance::UPDGameInstance()
 	static ConstructorHelpers::FObjectFinder<UDataTable> ET(TEXT("DataTable'/Game/CsvData/EquipData.EquipData'"));
 	if (ET.Succeeded())
 	{
-		EquipData = ET.Object;
+		EquipmentData = ET.Object;
 	}
 }
 
@@ -40,12 +43,12 @@ void UPDGameInstance::MonsterStatArrayAdd()
 
 FString UPDGameInstance::GetEquipRowData(int32 index, FString rowName)
 {
-	if (EquipData == nullptr)
+	if (EquipmentData == nullptr)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Error : GameInstance - GetEquipRowData : EquipData is nullptr"));
 		return FString();
 	}
-	FEquipData* rowData = EquipData->FindRow<FEquipData>(*FString::FromInt(index), TEXT(""));
+	FEquipData* rowData = EquipmentData->FindRow<FEquipData>(*FString::FromInt(index), TEXT(""));
 	if (rowData)
 	{
 		if (rowName == "Name")
@@ -104,6 +107,27 @@ UPDCharacterStat* UPDGameInstance::GetPlayerStat()
 		PlayerStat->Stat.Index = 0;
 	}
 	return PlayerStat;
+}
+
+UPDBagData* UPDGameInstance::GetBagData()
+{
+	if (BagData == nullptr)
+		BagData = NewObject<UPDBagData>(this, UPDBagData::StaticClass());
+	return BagData;
+}
+
+UPDEquipData* UPDGameInstance::GetEquipData()
+{
+	if (EquipData == nullptr)
+		EquipData = NewObject<UPDEquipData>(this, UPDEquipData::StaticClass());
+	return EquipData;
+}
+
+UPDStorageData* UPDGameInstance::GetStorageData()
+{
+	if (StorageData == nullptr)
+		StorageData = NewObject<UPDStorageData>(this, UPDStorageData::StaticClass());
+	return StorageData;
 }
 
 UPDCharacterItemInventory* UPDGameInstance::GetPlayerInventory()
