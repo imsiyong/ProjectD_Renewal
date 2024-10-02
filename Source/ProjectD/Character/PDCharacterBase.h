@@ -64,10 +64,6 @@ public:
 	class UPDEquipData* EquipData;
 	class UPDStorageData* StorageData;
 
-	//delete after set New Data
-	class UPDCharacterItemInventory* Inventory;
-	class UPDCharacterEquip* Equip;
-
 	void ToggleInteractionWidget();
 
 	UFUNCTION()

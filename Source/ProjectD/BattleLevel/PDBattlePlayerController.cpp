@@ -11,6 +11,11 @@ APDBattlePlayerController::APDBattlePlayerController()
 	{
 		PDUWBattleStatus = BS.Class;
 	}
+	ConstructorHelpers::FClassFinder<UUserWidget> BB(TEXT("WidgetBlueprint'/Game/UMG/Renewal/UWBattleBag.UWBattleBag_C'"));
+	if (BB.Succeeded())
+	{
+		PDUWBattleBag = BB.Class;
+	}
 }
 
 void APDBattlePlayerController::BeginPlay()
@@ -27,6 +32,14 @@ void APDBattlePlayerController::SetupInputComponent()
 		if (BattleStatusWidget)
 		{
 			BattleStatusWidget->AddToViewport();
+		}
+	}
+	if (PDUWBattleBag)
+	{
+		BattleBag = CreateWidget<UUserWidget>(this, PDUWBattleBag);
+		if (BattleBag)
+		{
+			BattleBag->AddToViewport();
 		}
 	}
 }

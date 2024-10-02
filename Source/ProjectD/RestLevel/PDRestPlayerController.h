@@ -23,6 +23,10 @@ public:
 		TSubclassOf<class UPDUWCharacterStat> UWCharacterStat;
 	class UPDUWCharacterStat* CharacterStat;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Widget")
+		TSubclassOf<class UUserWidget> UWItemManage;
+	class UUserWidget* ItemManage;
+
 	void ToggleInteractionWidget();
 	EInteractionType InteractionType;
 

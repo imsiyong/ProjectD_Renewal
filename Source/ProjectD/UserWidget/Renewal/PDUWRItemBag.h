@@ -13,5 +13,16 @@ UCLASS()
 class PROJECTD_API UPDUWRItemBag : public UUserWidget
 {
 	GENERATED_BODY()
-	
+public:
+	void Init();
+	void Refresh();
+	void GetReferencePointer();
+	virtual void NativeOnInitialized() override;
+
+public:
+	class APDCharacterBase* Player;
+	class UPDGameInstance* PDGameInstance;
+
+	TArray<class UPDUWRItemSlot*> Slots;
+	int32 MaxCount;
 };

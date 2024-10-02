@@ -16,6 +16,7 @@
 #include "../RestLevel/PDRestPlayerController.h"
 #include "../Manager/PDNormalMonsterManager.h"
 #include "../Object/Item/PDItemBase.h"
+#include "../DataStruct/PDBagData.h"
 
 // Sets default values
 APDCharacterBase::APDCharacterBase()
@@ -55,7 +56,6 @@ APDCharacterBase::APDCharacterBase()
 	//
 	//
 	Tags.Add(FName("Player"));
-	
 }
 
 // Called when the game starts or when spawned
@@ -73,8 +73,9 @@ void APDCharacterBase::BeginPlay()
 			GetCharacterMovement()->MaxWalkSpeed = CharacterStat->GetSpeed();
 			GetCharacterMovement()->JumpZVelocity = CharacterStat->GetJump();
 		}
-		Inventory = PDGameInstance->GetPlayerInventory();
-		Equip = PDGameInstance->GetPlayerEquip();
+		BagData = PDGameInstance->GetBagData();
+		EquipData = PDGameInstance->GetEquipData();
+		StorageData = PDGameInstance->GetStorageData();
 	}
 	PDPlayerController = UGameplayStatics::GetPlayerController(this, 0);
 	ChangeCurHp(CharacterStat->GetMaxHp());
@@ -146,6 +147,8 @@ void APDCharacterBase::Jump()
 		bPressedJump = true;
 		JumpKeyHoldTime = 0.0f;
 	}
+	UTexture2D* texture2 = Cast<UTexture2D>(StaticLoadObject(UTexture2D::StaticClass(), nullptr, TEXT("/Game/DownloadAsset/MyTexture/Texture_Mace.Texture_Mace")));
+	BagData->AddItem(TEXT("test"), 1, texture2, EInventoryType::Weapon, EEquipType::Right);
 }
 
 void APDCharacterBase::StopJumping()
@@ -238,8 +241,6 @@ void APDCharacterBase::AttackCheck()
 
 void APDCharacterBase::ToggleInteractionWidget()
 {
-	
-
 	auto PlayerController = Cast<APDRestPlayerController>(PDPlayerController);
 	if (PlayerController == nullptr)
 		return;
@@ -275,11 +276,28 @@ void APDCharacterBase::BeginOverlap(UPrimitiveComponent* OverlappedComponent, AA
 			return;
 		PlayerController->InteractionType = EInteractionType::Stat;
 	}
+	else if (OtherActor->ActorHasTag(FName("Test2")))
+	{
+		auto PlayerController = Cast<APDRestPlayerController>(PDPlayerController);
+		if (PlayerController == nullptr)
+			return;
+		PlayerController->InteractionType = EInteractionType::ItemManager;
+	}
 }
 
 void APDCharacterBase::EndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
 	if (OtherActor->ActorHasTag(FName("Test")))
+	{
+		MovementInputValid = true;
+		MouseInputValid = true;
+		auto PlayerController = Cast<APDRestPlayerController>(PDPlayerController);
+		if (PlayerController == nullptr)
+			return;
+		PlayerController->InteractionType = EInteractionType::None;
+		PlayerController->RemoveAllInteractionWidget();
+	}
+	else if (OtherActor->ActorHasTag(FName("Test2")))
 	{
 		MovementInputValid = true;
 		MouseInputValid = true;

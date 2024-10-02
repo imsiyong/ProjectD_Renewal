@@ -12,6 +12,11 @@ APDRestPlayerController::APDRestPlayerController()
 	{
 		UWCharacterStat = CS.Class;
 	}
+	ConstructorHelpers::FClassFinder<UUserWidget> IM(TEXT("WidgetBlueprint'/Game/UMG/Renewal/UWRestItemManage.UWRestItemManage_C'"));
+	if (IM.Succeeded())
+	{
+		UWItemManage = IM.Class;
+	}
 }
 
 void APDRestPlayerController::SetupInputComponent()
@@ -20,8 +25,12 @@ void APDRestPlayerController::SetupInputComponent()
 	{
 		CharacterStat = CreateWidget<UPDUWCharacterStat>(this, UWCharacterStat);
 	}
+	if (UWItemManage != nullptr)
+	{
+		ItemManage = CreateWidget<UUserWidget>(this, UWItemManage);
+	}
 }
-
+//
 void APDRestPlayerController::ToggleInteractionWidget()
 {
 	switch (InteractionType)
@@ -43,9 +52,20 @@ void APDRestPlayerController::ToggleInteractionWidget()
 			}
 		}
 		break;
-	case EInteractionType::Inventory:
-		break;
-	case EInteractionType::Equip:
+	case EInteractionType::ItemManager:
+		if (ItemManage != nullptr)
+		{
+			if (ItemManage->IsInViewport())
+			{
+				ItemManage->RemoveFromViewport();
+				bShowMouseCursor = false;
+			}
+			else
+			{
+				ItemManage->AddToViewport();
+				bShowMouseCursor = true;
+			}
+		}
 		break;
 	default:
 		break;
@@ -58,6 +78,7 @@ void APDRestPlayerController::RemoveAllInteractionWidget()
 	if (CharacterStat->IsInViewport())
 	{
 		CharacterStat->RemoveFromViewport();
+		ItemManage->RemoveFromViewport();
 	}
 }
 

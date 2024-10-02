@@ -109,9 +109,9 @@ UPDCharacterStat* UPDGameInstance::GetPlayerStat()
 	return PlayerStat;
 }
 
-UPDBagData* UPDGameInstance::GetBagData()
+class UPDBagData* UPDGameInstance::GetBagData()
 {
-	if (BagData == nullptr)
+	if(BagData == nullptr)
 		BagData = NewObject<UPDBagData>(this, UPDBagData::StaticClass());
 	return BagData;
 }
@@ -128,18 +128,4 @@ UPDStorageData* UPDGameInstance::GetStorageData()
 	if (StorageData == nullptr)
 		StorageData = NewObject<UPDStorageData>(this, UPDStorageData::StaticClass());
 	return StorageData;
-}
-
-UPDCharacterItemInventory* UPDGameInstance::GetPlayerInventory()
-{
-	if (Inventory == nullptr)
-		Inventory = NewObject<UPDCharacterItemInventory>(this, UPDCharacterItemInventory::StaticClass());
-	return Inventory;
-}
-
-UPDCharacterEquip* UPDGameInstance::GetPlayerEquip()
-{
-	if (Equip == nullptr)
-		Equip = NewObject<UPDCharacterEquip>(this, UPDCharacterEquip::StaticClass());
-	return Equip;
 }

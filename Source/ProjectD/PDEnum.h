@@ -109,6 +109,5 @@ enum class EInteractionType : uint8
 {
 	None		UMETA(DisplayName = "None"),
 	Stat		UMETA(DisplyaName = "Stat"),
-	Inventory	UMETA(DisplayName = "Inventory"),
-	Equip		UMETA(DisplayName = "Equip")
+	ItemManager	UMETA(DisplayName = "ItemManager")
 };

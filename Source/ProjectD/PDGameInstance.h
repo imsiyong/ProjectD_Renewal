@@ -8,6 +8,7 @@
 #include "DataStruct/PDCharacterStat.h"
 #include "PDGameInstance.generated.h"
 
+#define BAG_MAX_COUNT 5
 
 UCLASS()
 class PROJECTD_API UPDGameInstance : public UGameInstance
@@ -41,7 +42,7 @@ public:
 
 	UPROPERTY()
 		class UPDBagData* BagData;
-	UPDBagData* GetBagData();
+	class UPDBagData* GetBagData();
 
 	UPROPERTY()
 		class UPDEquipData* EquipData;
@@ -50,12 +51,4 @@ public:
 	UPROPERTY()
 		class UPDStorageData* StorageData;
 	UPDStorageData* GetStorageData();
-
-	UPROPERTY()
-	class UPDCharacterItemInventory* Inventory;
-	UPDCharacterItemInventory* GetPlayerInventory();
-
-	UPROPERTY()
-	class UPDCharacterEquip* Equip;
-	UPDCharacterEquip* GetPlayerEquip();
 };

@@ -23,4 +23,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Widget")
 		TSubclassOf<class UPDUWBattleStatus> PDUWBattleStatus;
 	class UPDUWBattleStatus* BattleStatusWidget;
+
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Widget")
+		TSubclassOf<class UUserWidget> PDUWBattleBag;
+	class UUserWidget* BattleBag;
 };
