@@ -12,6 +12,7 @@ FEquipSlotData::FEquipSlotData()
 	Texture = Cast<UTexture2D>(StaticLoadObject(UTexture2D::StaticClass(), nullptr, TEXT("/Game/DownloadAsset/MyTexture/emptytexture.emptytexture")));
 	EquipType = EEquipType::None;
 	InventoryType = EInventoryType::None;
+	CheckMount = false;
 }
 
 FEquipSlotData::FEquipSlotData(int32 index)
@@ -23,6 +24,7 @@ FEquipSlotData::FEquipSlotData(int32 index)
 	Texture = Cast<UTexture2D>(StaticLoadObject(UTexture2D::StaticClass(), nullptr, TEXT("/Game/DownloadAsset/MyTexture/emptytexture.emptytexture")));
 	EquipType = EEquipType::None;
 	InventoryType = EInventoryType::None;
+	CheckMount = false;
 }
 
 UPDEquipData::UPDEquipData()
@@ -36,7 +38,7 @@ UPDEquipData::UPDEquipData()
 	}
 }
 
-void UPDEquipData::AddItem(FString name, int32 itemCode, UTexture2D* texture, EInventoryType type, EEquipType equiptype)
+int32 UPDEquipData::AddItem(FString name, int32 itemCode, UTexture2D* texture, EInventoryType type, EEquipType equiptype)
 {
 	int32 index = 0;
 	switch (equiptype)
@@ -64,13 +66,15 @@ void UPDEquipData::AddItem(FString name, int32 itemCode, UTexture2D* texture, EI
 	if (EquipData[index].ItemCode != -1)
 	{
 		UE_LOG(LogTemp, Log, TEXT("Already Have Equipment : PDEQuipData.cpp : AddItem()"));
-		return;
+		return -1;
 	}
 	EquipData[index].Name = name;
 	EquipData[index].ItemCode = itemCode;
 	EquipData[index].Texture = texture;
 	EquipData[index].InventoryType = type;
 	EquipData[index].EquipType = equiptype;
+	EquipData[index].CheckMount = false;
+	return 0;
 }
 
 void UPDEquipData::RemoveItemByIndex(int32 index)
@@ -83,5 +87,6 @@ void UPDEquipData::RemoveItemByIndex(int32 index)
 		EquipData[index].Texture = DefaultTexture;
 		EquipData[index].InventoryType = EInventoryType::None;
 		EquipData[index].EquipType = EEquipType::None;
+		EquipData[index].CheckMount = false;
 	}
 }

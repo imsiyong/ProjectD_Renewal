@@ -59,6 +59,8 @@ class PROJECTD_API UPDBagData : public UObject
 public:
 	UPDBagData();
 
+	class UPDGameInstance* PDGameInstance;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		int32 MaxCount;
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
@@ -67,9 +69,11 @@ public:
 		UTexture2D* DefaultTexture;
 public:
 	UFUNCTION()
-		void AddItem(FString name, int32 itemCode, UTexture2D* texture, EInventoryType type, EEquipType equiptype);
+		int32 AddItem(FString name, int32 itemCode, UTexture2D* texture, EInventoryType type, EEquipType equiptype);
 	UFUNCTION()
 		void AddItemByIndex(int32 index, FString name, int32 itemCode, UTexture2D* texture, EInventoryType type, EEquipType equiptype);
+	UFUNCTION()
+		void AddItemByItemcode(int32 itemCode);
 	UFUNCTION()
 		void RemoveItemByIndex(int32 index);
 	UFUNCTION()

@@ -65,6 +65,7 @@ public:
 	class UPDStorageData* StorageData;
 
 	void ToggleInteractionWidget();
+	void WeaponMount();
 
 	UFUNCTION()
 		void BeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,

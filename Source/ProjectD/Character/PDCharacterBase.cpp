@@ -17,6 +17,7 @@
 #include "../Manager/PDNormalMonsterManager.h"
 #include "../Object/Item/PDItemBase.h"
 #include "../DataStruct/PDBagData.h"
+#include "../DataStruct/PDEquipData.h"
 
 // Sets default values
 APDCharacterBase::APDCharacterBase()
@@ -147,8 +148,6 @@ void APDCharacterBase::Jump()
 		bPressedJump = true;
 		JumpKeyHoldTime = 0.0f;
 	}
-	UTexture2D* texture2 = Cast<UTexture2D>(StaticLoadObject(UTexture2D::StaticClass(), nullptr, TEXT("/Game/DownloadAsset/MyTexture/Texture_Mace.Texture_Mace")));
-	BagData->AddItem(TEXT("test"), 1, texture2, EInventoryType::Weapon, EEquipType::Right);
 }
 
 void APDCharacterBase::StopJumping()
@@ -263,6 +262,26 @@ void APDCharacterBase::ToggleInteractionWidget()
 		else
 		{
 			MouseInputValid = true;
+		}
+	}
+}
+
+void APDCharacterBase::WeaponMount()
+{
+	for (int32 i = 0; i < EquipData->MaxCount; i++)
+	{
+		if (!EquipData->EquipData[i].CheckMount)
+		{
+			if (EquipData->EquipData[i].ItemCode == -1)
+			{
+				//아이템 메시 장착 해제
+				//캐릭터 스탯 복구
+			}
+			else
+			{
+				//아이템 메시 장착
+				//캐릭터 스탯 변경
+			}
 		}
 	}
 }

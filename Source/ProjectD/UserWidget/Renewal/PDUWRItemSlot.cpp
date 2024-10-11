@@ -48,8 +48,17 @@ FReply UPDUWRItemSlot::NativeOnMouseButtonDown(const FGeometry& InGeometry, cons
 
 FReply UPDUWRItemSlot::NativeOnMouseButtonDoubleClick(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
 {
+	GetReferencePointer();
+
 	FEventReply reply;
 	reply.NativeReply = Super::NativeOnMouseButtonDoubleClick(InGeometry, InMouseEvent);
+
+	FString name = "";
+	int32 itemCode = -1;
+	UTexture2D* texture = nullptr;
+	EInventoryType inventoryType = EInventoryType::None;
+	EEquipType equipType = EEquipType::None;
+
 	if (InMouseEvent.IsMouseButtonDown(EKeys::LeftMouseButton) == true)
 	{
 		switch (SlotType)
@@ -61,10 +70,52 @@ FReply UPDUWRItemSlot::NativeOnMouseButtonDoubleClick(const FGeometry& InGeometr
 			return reply.NativeReply;
 			break;
 		case ESlotType::Equip:
+			name = PDGameInstance->EquipData->EquipData[SlotNum].Name;
+			itemCode = PDGameInstance->EquipData->EquipData[SlotNum].ItemCode;
+			texture = PDGameInstance->EquipData->EquipData[SlotNum].Texture;
+			inventoryType = PDGameInstance->EquipData->EquipData[SlotNum].InventoryType;
+			equipType = PDGameInstance->EquipData->EquipData[SlotNum].EquipType;
+			if (inventoryType == EInventoryType::None)
+			{
+				break;
+			}
+			if (PDGameInstance->StorageData->AddItem(name, itemCode, texture, inventoryType, equipType)!= 0)
+			{
+				return reply.NativeReply;
+			}
+			PDGameInstance->EquipData->RemoveItemByIndex(SlotNum);
 			break;
 		case ESlotType::Storage:
+			name = PDGameInstance->StorageData->StorageData[SlotNum].Name;
+			itemCode = PDGameInstance->StorageData->StorageData[SlotNum].ItemCode;
+			texture = PDGameInstance->StorageData->StorageData[SlotNum].Texture;
+			inventoryType = PDGameInstance->StorageData->StorageData[SlotNum].InventoryType;
+			equipType = PDGameInstance->StorageData->StorageData[SlotNum].EquipType;
+			if (inventoryType == EInventoryType::None)
+			{
+				break;
+			}
+			if (PDGameInstance->EquipData->AddItem(name, itemCode, texture, inventoryType, equipType) != 0)
+			{
+				return reply.NativeReply;
+			}
+			PDGameInstance->StorageData->RemoveItemByIndex(SlotNum);
 			break;
 		case ESlotType::Bag:
+			name = PDGameInstance->BagData->BagData[SlotNum].Name;
+			itemCode = PDGameInstance->BagData->BagData[SlotNum].ItemCode;
+			texture = PDGameInstance->BagData->BagData[SlotNum].Texture;
+			inventoryType = PDGameInstance->BagData->BagData[SlotNum].InventoryType;
+			equipType = PDGameInstance->BagData->BagData[SlotNum].EquipType;
+			if (inventoryType == EInventoryType::None)
+			{
+				break;
+			}
+			if (PDGameInstance->StorageData->AddItem(name, itemCode, texture, inventoryType, equipType) != 0)
+			{
+				return reply.NativeReply;
+			}
+			PDGameInstance->BagData->RemoveItemByIndex(SlotNum);
 			break;
 		default:
 			break;
@@ -104,7 +155,6 @@ void UPDUWRItemSlot::GetReferencePointer()
 
 void UPDUWRItemSlot::Refresh()
 {
-	UE_LOG(LogTemp, Log, TEXT("test Refresh"));
 	GetReferencePointer();
 	switch (SlotType)
 	{

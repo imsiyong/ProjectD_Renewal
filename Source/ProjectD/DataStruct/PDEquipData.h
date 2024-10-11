@@ -24,6 +24,7 @@ public:
 		Texture = ref.Texture;
 		EquipType = ref.EquipType;
 		InventoryType = ref.InventoryType;
+		CheckMount = ref.CheckMount;
 		return *this;
 	}
 
@@ -47,6 +48,9 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "SlotType")
 		EInventoryType InventoryType;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		bool CheckMount;
 };
 
 /**
@@ -67,7 +71,7 @@ public:
 		UTexture2D* DefaultTexture;
 public:
 	UFUNCTION()
-		void AddItem(FString name, int32 itemCode, UTexture2D* texture, EInventoryType type, EEquipType equiptype);
+		int32 AddItem(FString name, int32 itemCode, UTexture2D* texture, EInventoryType type, EEquipType equiptype);
 	UFUNCTION()
 		void RemoveItemByIndex(int32 index);
 };

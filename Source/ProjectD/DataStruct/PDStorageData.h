@@ -67,7 +67,7 @@ public:
 		UTexture2D* DefaultTexture;
 public:
 	UFUNCTION()
-		void AddItem(FString name, int32 itemCode, UTexture2D* texture, EInventoryType type, EEquipType equiptype);
+		int AddItem(FString name, int32 itemCode, UTexture2D* texture, EInventoryType type, EEquipType equiptype);
 	UFUNCTION()
 		void AddItemByIndex(int32 index, FString name, int32 itemCode, UTexture2D* texture, EInventoryType type, EEquipType equiptype);
 	UFUNCTION()

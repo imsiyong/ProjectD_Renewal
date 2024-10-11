@@ -36,14 +36,14 @@ UPDStorageData::UPDStorageData()
 	}
 }
 
-void UPDStorageData::AddItem(FString name, int32 itemCode, UTexture2D* texture, EInventoryType type, EEquipType equiptype)
+int UPDStorageData::AddItem(FString name, int32 itemCode, UTexture2D* texture, EInventoryType type, EEquipType equiptype)
 {
 	int32 index = 0;
 	while (1)
 	{
 		if (index >= MaxCount)
 		{
-			return;
+			return -1;
 		}
 		if (StorageData[index].InventoryType == EInventoryType::None)
 		{
@@ -56,6 +56,7 @@ void UPDStorageData::AddItem(FString name, int32 itemCode, UTexture2D* texture, 
 	StorageData[index].Texture = texture;
 	StorageData[index].InventoryType = type;
 	StorageData[index].EquipType = equiptype;
+	return 0;
 }
 
 void UPDStorageData::AddItemByIndex(int32 index, FString name, int32 itemCode, UTexture2D* texture, EInventoryType type, EEquipType equiptype)

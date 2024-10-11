@@ -4,6 +4,7 @@
 #include "PDItemBase.h"
 #include "Components/BoxComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "../../DataStruct/PDBagData.h"
 #include "../../Character/PDCharacterBase.h"
 #include "../../PDGameInstance.h"
 // Sets default values
@@ -40,7 +41,15 @@ void APDItemBase::Tick(float DeltaTime)
 
 void APDItemBase::BeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	UE_LOG(LogTemp, Log, TEXT("Begin Overlap"));
+	if (PDGameInstance == nullptr)
+	{
+		PDGameInstance = Cast<UPDGameInstance>(GetGameInstance());
+	}
+	if (OtherActor->ActorHasTag(FName("Player")))
+	{
+		PDGameInstance->BagData->AddItemByItemcode(ItemCode);
+	}
+	Destroy();
 }
 
 void APDItemBase::Init(int32 index)

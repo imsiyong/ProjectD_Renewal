@@ -2,6 +2,8 @@
 
 
 #include "PDBagData.h"
+#include "../PDGameInstance.h"
+#include "Kismet/GameplayStatics.h"
 
 FBagData::FBagData()
 {
@@ -36,12 +38,12 @@ UPDBagData::UPDBagData()
 	}
 }
 
-void UPDBagData::AddItem(FString name, int32 itemCode, UTexture2D* texture, EInventoryType type, EEquipType equiptype)
+int32 UPDBagData::AddItem(FString name, int32 itemCode, UTexture2D* texture, EInventoryType type, EEquipType equiptype)
 {
 	int32 index = 0;
 	while (1)
 	{
-		if (index >= MaxCount)return;
+		if (index >= MaxCount)return -1;
 		if (BagData[index].InventoryType == EInventoryType::None)break;
 		index++;
 	}
@@ -50,6 +52,7 @@ void UPDBagData::AddItem(FString name, int32 itemCode, UTexture2D* texture, EInv
 	BagData[index].Texture = texture;
 	BagData[index].InventoryType = type;
 	BagData[index].EquipType = equiptype;
+	return 0;
 }
 
 void UPDBagData::AddItemByIndex(int32 index, FString name, int32 itemCode, UTexture2D* texture, EInventoryType type, EEquipType equiptype)
@@ -60,6 +63,21 @@ void UPDBagData::AddItemByIndex(int32 index, FString name, int32 itemCode, UText
 	BagData[index].Texture = texture;
 	BagData[index].InventoryType = type;
 	BagData[index].EquipType = equiptype;
+}
+
+void UPDBagData::AddItemByItemcode(int32 itemCode)
+{
+	if (PDGameInstance == nullptr)
+	{
+		PDGameInstance = Cast<UPDGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+	}
+	FString Name = PDGameInstance->GetEquipRowData(itemCode, "Name");
+	FString TexturePath = PDGameInstance->GetEquipRowData(itemCode, "Texture");
+	UTexture2D* texture = Cast<UTexture2D>(StaticLoadObject(UTexture2D::StaticClass(), nullptr, *TexturePath));
+	
+	//EInventoryType and EEquipType have to check after add another item
+	//Fix Weapon, and Right -> change other type more flexible
+	AddItem(Name, itemCode, texture, EInventoryType::Weapon, EEquipType::Right);
 }
 
 void UPDBagData::RemoveItemByIndex(int32 index)
