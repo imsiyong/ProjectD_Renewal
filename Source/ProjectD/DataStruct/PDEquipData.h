@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "../PDEnum.h"
+#include "PDEquipStat.h"
 #include "UObject/NoExportTypes.h"
 #include "PDEquipData.generated.h"
 
@@ -51,6 +52,9 @@ public:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		bool CheckMount;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FEquipStat EquipStat;
 };
 
 /**

@@ -60,6 +60,7 @@ public:
 	class UPDGameInstance* PDGameInstance;
 
 	class UPDCharacterStat* CharacterStat;
+	class UPDEquipStat* EquipStat;
 	class UPDBagData* BagData;
 	class UPDEquipData* EquipData;
 	class UPDStorageData* StorageData;

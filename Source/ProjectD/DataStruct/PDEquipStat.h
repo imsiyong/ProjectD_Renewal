@@ -13,6 +13,10 @@ struct FEquipStat
 	GENERATED_USTRUCT_BODY()
 public:
 	FEquipStat();
+
+	void SetStat(int32 itemCode, UWorld* world);
+	void ResetStat();
+
 	FEquipStat& operator=(const FEquipStat& ref)
 	{
 		Index = ref.Index;
@@ -24,6 +28,19 @@ public:
 		AtkRange = ref.AtkRange;
 		AtkSpeed = ref.AtkSpeed;
 		return *this;
+	}
+
+	FEquipStat operator+(const FEquipStat& ref) const
+	{
+		FEquipStat result = FEquipStat();
+		result.MaxHp = this->MaxHp + ref.MaxHp;
+		result.Atk = this->Atk + ref.Atk;
+		result.Def = this->Def + ref.Def;
+		result.Speed = this->Speed + ref.Speed;
+		result.Jump = this->Jump + ref.Jump;
+		result.AtkRange = this->AtkRange + ref.AtkRange;
+		result.AtkSpeed = this->AtkSpeed + ref.AtkSpeed;
+		return result;
 	}
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)

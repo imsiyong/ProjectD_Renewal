@@ -12,6 +12,7 @@
 #include "DataStruct/PDBagData.h"
 #include "DataStruct/PDEquipData.h"
 #include "DataStruct/PDStorageData.h"
+#include "DataStruct/PDEquipStat.h"
 
 UPDGameInstance::UPDGameInstance()
 {
@@ -107,6 +108,15 @@ UPDCharacterStat* UPDGameInstance::GetPlayerStat()
 		PlayerStat->Stat.Index = 0;
 	}
 	return PlayerStat;
+}
+
+UPDEquipStat* UPDGameInstance::GetEquipStat()
+{
+	if (EquipStat == nullptr)
+	{
+		EquipStat = NewObject<UPDEquipStat>(this, UPDEquipStat::StaticClass());
+	}
+	return EquipStat;
 }
 
 class UPDBagData* UPDGameInstance::GetBagData()

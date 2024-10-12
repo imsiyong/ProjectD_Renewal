@@ -41,6 +41,10 @@ public:
 	UPDCharacterStat* GetPlayerStat();
 
 	UPROPERTY()
+		class UPDEquipStat* EquipStat;
+	UPDEquipStat* GetEquipStat();
+
+	UPROPERTY()
 		class UPDBagData* BagData;
 	class UPDBagData* GetBagData();
 

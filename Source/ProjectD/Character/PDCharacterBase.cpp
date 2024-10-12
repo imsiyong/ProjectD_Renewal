@@ -18,6 +18,7 @@
 #include "../Object/Item/PDItemBase.h"
 #include "../DataStruct/PDBagData.h"
 #include "../DataStruct/PDEquipData.h"
+#include "../DataStruct/PDEquipStat.h"
 
 // Sets default values
 APDCharacterBase::APDCharacterBase()
@@ -74,6 +75,7 @@ void APDCharacterBase::BeginPlay()
 			GetCharacterMovement()->MaxWalkSpeed = CharacterStat->GetSpeed();
 			GetCharacterMovement()->JumpZVelocity = CharacterStat->GetJump();
 		}
+		EquipStat = PDGameInstance->GetEquipStat();
 		BagData = PDGameInstance->GetBagData();
 		EquipData = PDGameInstance->GetEquipData();
 		StorageData = PDGameInstance->GetStorageData();
@@ -87,7 +89,7 @@ void APDCharacterBase::BeginPlay()
 void APDCharacterBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
+	WeaponMount();
 }
 
 // Called to bind functionality to input
@@ -220,7 +222,7 @@ void APDCharacterBase::AttackCheck()
 	FHitResult HitResult;
 	FCollisionQueryParams Params(NAME_None, false, this);
 
-	float AttackRange = CharacterStat->GetAtkRange();
+	float AttackRange = CharacterStat->GetAtkRange() + EquipStat->Stat.AtkRange;
 	float AttackRadius = 50.f;
 
 	bool bResult = GetWorld()->SweepSingleByChannel(
@@ -234,7 +236,7 @@ void APDCharacterBase::AttackCheck()
 	if (bResult && HitResult.Actor.IsValid() && HitResult.Actor->ActorHasTag("Monster"))
 	{
 		FDamageEvent DamageEvent;
-		HitResult.Actor->TakeDamage(CharacterStat->GetAtk(), DamageEvent, GetController(), this);
+		HitResult.Actor->TakeDamage(CharacterStat->GetAtk() + EquipStat->Stat.Atk, DamageEvent, GetController(), this);
 	}
 }
 
@@ -268,21 +270,31 @@ void APDCharacterBase::ToggleInteractionWidget()
 
 void APDCharacterBase::WeaponMount()
 {
+	bool trigger = false;
 	for (int32 i = 0; i < EquipData->MaxCount; i++)
 	{
 		if (!EquipData->EquipData[i].CheckMount)
 		{
+			trigger = true;
 			if (EquipData->EquipData[i].ItemCode == -1)
 			{
 				//아이템 메시 장착 해제
-				//캐릭터 스탯 복구
 			}
 			else
 			{
 				//아이템 메시 장착
-				//캐릭터 스탯 변경
 			}
+			EquipData->EquipData[i].CheckMount = true;
 		}
+	}
+	if (trigger)
+	{
+		EquipStat->Stat.ResetStat();
+		for (int32 i = 0; i < EquipData->MaxCount; i++)
+		{
+			EquipStat->Stat = EquipData->EquipData[i].EquipStat + EquipStat->Stat;
+		}
+		trigger = false;
 	}
 }
 

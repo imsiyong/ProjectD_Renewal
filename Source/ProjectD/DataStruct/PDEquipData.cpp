@@ -13,6 +13,7 @@ FEquipSlotData::FEquipSlotData()
 	EquipType = EEquipType::None;
 	InventoryType = EInventoryType::None;
 	CheckMount = false;
+	EquipStat = FEquipStat();
 }
 
 FEquipSlotData::FEquipSlotData(int32 index)
@@ -25,6 +26,7 @@ FEquipSlotData::FEquipSlotData(int32 index)
 	EquipType = EEquipType::None;
 	InventoryType = EInventoryType::None;
 	CheckMount = false;
+	EquipStat = FEquipStat();
 }
 
 UPDEquipData::UPDEquipData()
@@ -74,6 +76,7 @@ int32 UPDEquipData::AddItem(FString name, int32 itemCode, UTexture2D* texture, E
 	EquipData[index].InventoryType = type;
 	EquipData[index].EquipType = equiptype;
 	EquipData[index].CheckMount = false;
+	EquipData[index].EquipStat.SetStat(itemCode, GetWorld());
 	return 0;
 }
 
@@ -88,5 +91,6 @@ void UPDEquipData::RemoveItemByIndex(int32 index)
 		EquipData[index].InventoryType = EInventoryType::None;
 		EquipData[index].EquipType = EEquipType::None;
 		EquipData[index].CheckMount = false;
+		EquipData[index].EquipStat.ResetStat();
 	}
 }
