@@ -279,10 +279,29 @@ void APDCharacterBase::WeaponMount()
 			if (EquipData->EquipData[i].ItemCode == -1)
 			{
 				//아이템 메시 장착 해제
+				if (EquipData->EquipData[i].ItemPointer != nullptr)
+				{
+					EquipData->EquipData[i].ItemPointer->Destroy();
+				}
+				EquipData->EquipData[i].ItemPointer = nullptr;
 			}
 			else
 			{
 				//아이템 메시 장착
+				APDItemBase* DeferredActor = GetWorld()->SpawnActorDeferred<APDItemBase>(APDItemBase::StaticClass(), FTransform(FRotator::ZeroRotator, FVector::ZeroVector));
+				if (DeferredActor)
+				{
+					EquipData->EquipData[i].ItemPointer = DeferredActor;
+
+					DeferredActor->Init(EquipData->EquipData[i].ItemCode);
+					DeferredActor->SetActorEnableCollision(false);
+					DeferredActor->FinishSpawning(FTransform(FRotator::ZeroRotator, FVector::ZeroVector));
+
+					FName WeaponSocket(TEXT("hand_r_socket"));
+					DeferredActor->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, WeaponSocket);
+					DeferredActor->SetOwner(this);
+				}
+
 			}
 			EquipData->EquipData[i].CheckMount = true;
 		}

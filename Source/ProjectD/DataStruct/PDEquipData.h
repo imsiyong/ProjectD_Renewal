@@ -26,6 +26,8 @@ public:
 		EquipType = ref.EquipType;
 		InventoryType = ref.InventoryType;
 		CheckMount = ref.CheckMount;
+		EquipStat = ref.EquipStat;
+		ItemPointer = ref.ItemPointer;
 		return *this;
 	}
 
@@ -55,6 +57,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		FEquipStat EquipStat;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		class APDItemBase* ItemPointer;
 };
 
 /**

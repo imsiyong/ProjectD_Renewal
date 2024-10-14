@@ -14,6 +14,7 @@ FEquipSlotData::FEquipSlotData()
 	InventoryType = EInventoryType::None;
 	CheckMount = false;
 	EquipStat = FEquipStat();
+	ItemPointer = nullptr;
 }
 
 FEquipSlotData::FEquipSlotData(int32 index)
@@ -27,6 +28,7 @@ FEquipSlotData::FEquipSlotData(int32 index)
 	InventoryType = EInventoryType::None;
 	CheckMount = false;
 	EquipStat = FEquipStat();
+	ItemPointer = nullptr;
 }
 
 UPDEquipData::UPDEquipData()
