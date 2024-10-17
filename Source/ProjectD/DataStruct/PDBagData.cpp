@@ -55,14 +55,15 @@ int32 UPDBagData::AddItem(FString name, int32 itemCode, UTexture2D* texture, EIn
 	return 0;
 }
 
-void UPDBagData::AddItemByIndex(int32 index, FString name, int32 itemCode, UTexture2D* texture, EInventoryType type, EEquipType equiptype)
+int32 UPDBagData::AddItemByIndex(int32 index, FString name, int32 itemCode, UTexture2D* texture, EInventoryType type, EEquipType equiptype)
 {
-	if (index<0 || index >=MaxCount)return;
+	if (index<0 || index >=MaxCount)return -1;
 	BagData[index].Name = name;
 	BagData[index].ItemCode = itemCode;
 	BagData[index].Texture = texture;
 	BagData[index].InventoryType = type;
 	BagData[index].EquipType = equiptype;
+	return 0;
 }
 
 void UPDBagData::AddItemByItemcode(int32 itemCode)

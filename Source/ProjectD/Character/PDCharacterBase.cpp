@@ -79,6 +79,10 @@ void APDCharacterBase::BeginPlay()
 		BagData = PDGameInstance->GetBagData();
 		EquipData = PDGameInstance->GetEquipData();
 		StorageData = PDGameInstance->GetStorageData();
+		for (int i = 0; i < 5; i++)
+		{
+			EquipData->EquipData[i].CheckMount = false;
+		}
 	}
 	PDPlayerController = UGameplayStatics::GetPlayerController(this, 0);
 	ChangeCurHp(CharacterStat->GetMaxHp());

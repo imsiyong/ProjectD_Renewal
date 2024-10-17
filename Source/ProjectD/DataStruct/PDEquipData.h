@@ -82,5 +82,7 @@ public:
 	UFUNCTION()
 		int32 AddItem(FString name, int32 itemCode, UTexture2D* texture, EInventoryType type, EEquipType equiptype);
 	UFUNCTION()
+		int32 AddItemByIndex(int32 index, FString name, int32 itemCode, UTexture2D* texture, EInventoryType type, EEquipType equiptype);
+	UFUNCTION()
 		void RemoveItemByIndex(int32 index);
 };

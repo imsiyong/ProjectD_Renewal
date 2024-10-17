@@ -82,6 +82,40 @@ int32 UPDEquipData::AddItem(FString name, int32 itemCode, UTexture2D* texture, E
 	return 0;
 }
 
+int32 UPDEquipData::AddItemByIndex(int32 index, FString name, int32 itemCode, UTexture2D* texture, EInventoryType type, EEquipType equiptype)
+{
+	switch (equiptype)
+	{
+	case EEquipType::None:
+		break;
+	case EEquipType::Head:
+		index = 0;
+		break;
+	case EEquipType::Body:
+		index = 2;
+		break;
+	case EEquipType::Foot:
+		index = 4;
+		break;
+	case EEquipType::Left:
+		index = 1;
+		break;
+	case EEquipType::Right:
+		index = 3;
+		break;
+	default:
+		break;
+	}
+	EquipData[index].Name = name;
+	EquipData[index].ItemCode = itemCode;
+	EquipData[index].Texture = texture;
+	EquipData[index].InventoryType = type;
+	EquipData[index].EquipType = equiptype;
+	EquipData[index].CheckMount = false;
+	EquipData[index].EquipStat.SetStat(itemCode, GetWorld());
+	return 0;
+}
+
 void UPDEquipData::RemoveItemByIndex(int32 index)
 {
 	if (index < 0 || index>MaxCount)return;

@@ -24,6 +24,11 @@ public:
 	void GetReferencePointer();
 	void Refresh();
 	void SetTexture(UTexture2D* texture);
+	void RemoveDataByIndex(ESlotType slotType, int32 index);
+	void AddDataByIndex(ESlotType slotType, int32 index, FString name, int32 itemCode, UTexture2D* texture, EInventoryType inventoryType, EEquipType equipType);
+	void SetDragData(class UPDUWRDragDrop* Drag);
+	void SwapData(ESlotType preSlot, int32 preIndex, ESlotType nextSlot, int32 nextIndex);
+
 public:
 	class APDCharacterBase* Player;
 	class UPDGameInstance* PDGameInstance;
@@ -37,7 +42,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 		TSubclassOf<UPDUWRItemSlot> DragSlot;
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, meta = (BindWidget))
-		class UImage* Img_Icon;
+		class UImage* IMG_Icon;
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, meta = (BindWidget))
 		class UTextBlock* TB_Count;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SlotType")
